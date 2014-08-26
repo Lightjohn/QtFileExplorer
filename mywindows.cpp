@@ -5,8 +5,9 @@ myWindows::myWindows(QWidget *parent) :QWidget(parent)
     //Getting size of the screen
     QList<QScreen*> screenObj = QGuiApplication::screens();
     screen = screenObj.at(0);
-    int height, sizeCol;
-    height = screen->geometry().height();
+    int sizeCol;
+    screenH = screen->geometry().height();
+    screenW = screen->geometry().width();
     sizeCol = 150;
 
     sizePreviewH = 512;
@@ -38,7 +39,7 @@ myWindows::myWindows(QWidget *parent) :QWidget(parent)
 
 
     lab = new QLabel("image ici");
-    lab->setMaximumHeight(height-sizeCol-100);
+    lab->setMaximumHeight(screenH-sizeCol-100);
 
     QPixmap *im = new QPixmap("test.png");
     lab->setPixmap(*im);
@@ -102,7 +103,7 @@ void myWindows::clickedNew(QModelIndex index,QModelIndex index2){
             lab->setPixmap(imtmp2);
         }
         //lab->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        preview->updateImage(*lastFilePath);
+        preview->updateImage(imtmp);
     }
     info->setName(fileName);
     info->setSize(model->size(index));
@@ -112,9 +113,11 @@ void myWindows::keyboardEvent(){
     //qDebug() << "SPACE ";
     if (preview->showing) {
         preview->hidePreview();
+        this->setFocus();
     } else {
         if (lastFilePath != NULL) {
             preview->showImage(*lastFilePath);
+            preview->setFocus();
         }
     }
 }
@@ -130,7 +133,6 @@ void myWindows::keyPressEvent(QKeyEvent* event) {
     if(event->type() == QEvent::ShortcutOverride) {
         qDebug() << "Override recu";
     }
-    //qDebug() << event->key();
 }
 
 myWindows::~myWindows(){

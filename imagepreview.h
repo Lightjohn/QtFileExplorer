@@ -17,7 +17,7 @@ class imagePreview : public QWidget
 public:
     explicit imagePreview(QWidget *parent = 0);
     void showImage(QString path);
-    void updateImage(QString path);
+    void updateImage(QPixmap im);
     void hidePreview();
     bool showing;
     void closeEvent(QCloseEvent *event);
@@ -29,7 +29,6 @@ public slots:
 private:
     QVBoxLayout *layout;
     QLabel *image;
-    QPixmap *im;
     QShortcut *shortcut;
 };
 

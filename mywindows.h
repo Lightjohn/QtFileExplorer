@@ -42,6 +42,8 @@ public:
     QShortcut *shortcut;
     QColumnView *columnView;
     QFileSystemModel *model;
+    int screenH;
+    int screenW;
 
 public slots:
 

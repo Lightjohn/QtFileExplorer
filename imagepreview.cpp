@@ -21,20 +21,18 @@ void imagePreview::hidePreview(){
     showing = false;
 }
 
-void imagePreview::updateImage(QString path){
-    //TODO get size from parent
-    QList<QScreen*> screenObj = QGuiApplication::screens();
-    QScreen *screen = screenObj.at(0);
-    int height, width;
-    height = screen->geometry().height();
-    width = screen->geometry().width();
+void imagePreview::updateImage(QPixmap im){
 
-    im = new QPixmap(path);
+    int height = ((myWindows*)(this->parent()))->screenH;
+    int width = ((myWindows*)(this->parent()))->screenW;
+
     QPixmap tmp;
-    if (im->height() > height) {
-        tmp = im->scaledToHeight(height - 100, Qt::SmoothTransformation);
+
+    //Replace all of that by some computation on size and do one resize only
+    if (im.height() > im.width()) {
+        tmp = im.scaledToHeight(height - 100, Qt::SmoothTransformation);
     }else{
-        tmp = *im;
+        tmp = im;
     }
     if (tmp.width() > width) {
         image->setPixmap(tmp.scaledToWidth(width - 50, Qt::SmoothTransformation));
