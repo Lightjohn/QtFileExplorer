@@ -8,8 +8,9 @@ KeyPressEater::KeyPressEater(myWindows *my)
 bool KeyPressEater::eventFilter(QObject *obj, QEvent *event)
 {
     if (event->type() == QEvent::KeyPress) {
-        QApplication::sendEvent(parent->columnView, event);
-        //QApplication::sendEvent(parent,event);
+        QWidget *focus = parent->columnView->focusWidget();
+        QApplication::sendEvent(focus, event);
+        QApplication::sendEvent(parent->columnView,event);
     }
     return QObject::eventFilter(obj, event);
 }

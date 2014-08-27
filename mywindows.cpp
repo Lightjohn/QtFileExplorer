@@ -88,12 +88,11 @@ myWindows::myWindows(QWidget *parent) :QWidget(parent)
 //The actionb called by the column view when the user do something
 void myWindows::clickedNew(QModelIndex index,QModelIndex index2){
     index2.row();//useless just to remove warning
-
     QString fileName = model->fileName(index);
     QString filePath = model->filePath(index);
     QString ext = fileName.split(".").back();
 
-    if (ext == "jpg" || ext == "png") {
+    if (ext.toLower() == "jpg" || ext.toLower() == "png") {
         lastFilePath = new QString(filePath);
         QPixmap imtmp(filePath);
         QPixmap imtmp2 = imtmp.scaledToHeight(sizePreviewH, Qt::SmoothTransformation);
