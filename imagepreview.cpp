@@ -5,8 +5,11 @@ imagePreview::imagePreview(QWidget *parent) :
 {
     layout = new QVBoxLayout;
     image = new QLabel("Wrong image chosen");
+    image->setStyleSheet("QLabel { background-color : black; }");
+    image->setAlignment(Qt::AlignCenter);
     layout->addWidget(image);
     showing = false;
+    isFullScreen = false;
     this->setLayout(layout);
 }
 
@@ -27,7 +30,6 @@ void imagePreview::updateImage(QPixmap im){
     int width = ((myWindows*)(this->parent()))->screenW;
 
     QPixmap tmp;
-
     //Replace all of that by some computation on size and do one resize only
     if (im.height() > im.width()) {
         tmp = im.scaledToHeight(height - 100, Qt::SmoothTransformation);
@@ -40,6 +42,15 @@ void imagePreview::updateImage(QPixmap im){
         image->setPixmap(tmp);
     }
     this->adjustSize();
+}
+
+void imagePreview::fullScreen(){
+    if (isFullScreen) {
+        this->showNormal();
+    } else {
+        this->showFullScreen();
+    }
+    isFullScreen = !isFullScreen;
 }
 
 void imagePreview::closeEvent(QCloseEvent*)

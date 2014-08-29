@@ -31,6 +31,7 @@
 #include "keypresseater.h"
 
 class imagePreview;
+class KeyPressEater;
 
 class myWindows : public QWidget
 {
@@ -42,6 +43,7 @@ public:
     QShortcut *shortcut;
     QColumnView *columnView;
     QFileSystemModel *model;
+    imagePreview *preview;
     int screenH;
     int screenW;
 
@@ -59,8 +61,9 @@ private:
     QHBoxLayout *layoutPreview;
     QLabel *lab;
     fileInfo *info;
-    QString *lastFilePath;
-    imagePreview *preview;
+    QString lastFilePath;
+    KeyPressEater *eater;
+
 };
 
 #endif // MYWINDOWS_H

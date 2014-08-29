@@ -5,16 +5,16 @@ fileInfo::fileInfo(QWidget *parent) :
 {
     layout = new QVBoxLayout;
 
-    commonName = new QString("Name: ");
-    commonSize = new QString("Size: ");
-    commonSizeEnd = new QString("");
-    fontSize = new QString("font: 14pt;");
+    commonName = QString("Name: ");
+    commonSize = QString("Size: ");
+    commonSizeEnd = QString("");
+    fontSize = QString("font: 14pt;");
 
-    name = new QLabel(*commonName+"No file chosen");
-    size = new QLabel(*commonSize+"0");
+    name = new QLabel(commonName+"No file chosen");
+    size = new QLabel(commonSize+"0");
 
-    name->setStyleSheet(*fontSize);
-    size->setStyleSheet(*fontSize);
+    name->setStyleSheet(fontSize);
+    size->setStyleSheet(fontSize);
 
     layout->addWidget(name);
     layout->addWidget(size);
@@ -23,23 +23,26 @@ fileInfo::fileInfo(QWidget *parent) :
 }
 
 void fileInfo::setName(QString nameIn){
-    name->setText(*commonName+nameIn);
+    name->setText(commonName+nameIn);
 }
 
 void fileInfo::setSize(int sizeIn){
-    commonSizeEnd = new QString(" B");
+    commonSizeEnd = QString(" B");
     if (sizeIn > 1000) {
         sizeIn = sizeIn/1000;
-        commonSizeEnd = new QString(" kB");
+        commonSizeEnd = QString(" kB");
         if (sizeIn > 1000) {
             sizeIn = sizeIn/1000;
-            commonSizeEnd = new QString(" mB");
+            commonSizeEnd = QString(" mB");
             if (sizeIn > 1000) {
                 sizeIn = sizeIn/1000;
-                commonSizeEnd = new QString(" gB");
+                commonSizeEnd = QString(" gB");
             }
         }
 
     }
-    size->setText(*commonSize+QString::number(sizeIn)+*commonSizeEnd);
+    size->setText(commonSize+QString::number(sizeIn)+commonSizeEnd);
+}
+
+fileInfo::~fileInfo(){
 }

@@ -13,16 +13,17 @@ public:
     explicit fileInfo(QWidget *parent = 0);
     void setName(QString name);
     void setSize(int size);
+    ~fileInfo();
 
 signals:
 
 public slots:
 
 private:
-    QString *commonName;
-    QString *commonSize;
-    QString *commonSizeEnd;
-    QString *fontSize;
+    QString commonName;
+    QString commonSize;
+    QString commonSizeEnd;
+    QString fontSize;
 
     QLabel *name;
     QLabel *size;

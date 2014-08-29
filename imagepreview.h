@@ -16,11 +16,15 @@ class imagePreview : public QWidget
     Q_OBJECT
 public:
     explicit imagePreview(QWidget *parent = 0);
+    void closeEvent(QCloseEvent *event);
     void showImage(QString path);
     void updateImage(QPixmap im);
     void hidePreview();
+    void fullScreen();
+
     bool showing;
-    void closeEvent(QCloseEvent *event);
+    bool isFullScreen;
+
 
 signals:
 

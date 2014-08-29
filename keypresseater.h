@@ -19,6 +19,7 @@ protected:
 
 public:
     KeyPressEater(myWindows *my);
+    ~KeyPressEater();
 
 private:
     myWindows *parent;

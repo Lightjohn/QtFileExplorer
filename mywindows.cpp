@@ -26,7 +26,7 @@ myWindows::myWindows(QWidget *parent) :QWidget(parent)
     // |  column view   |
     // |________________|
     //
-    layoutGlobal = new QVBoxLayout();
+    layoutGlobal = new QVBoxLayout;
     layoutGlobal->setAlignment(Qt::AlignCenter);
 
     //Gloval preview
@@ -41,8 +41,8 @@ myWindows::myWindows(QWidget *parent) :QWidget(parent)
     lab = new QLabel("image ici");
     lab->setMaximumHeight(screenH-sizeCol-100);
 
-    QPixmap *im = new QPixmap("test.png");
-    lab->setPixmap(*im);
+
+    lab->setPixmap(QPixmap("test.png"));
 
     info = new fileInfo;
 
@@ -50,10 +50,10 @@ myWindows::myWindows(QWidget *parent) :QWidget(parent)
 
     //Column view part
 
-    model = new QFileSystemModel;
+    model = new QFileSystemModel(this);
     model->setRootPath(QDir::rootPath());
 
-    columnView = new QColumnView;
+    columnView = new QColumnView(this);
     columnView->setMinimumHeight(sizeCol);
     columnView->setModel(model);
     columnView->setRootIndex(model->setRootPath(QDir::homePath()));
@@ -77,7 +77,7 @@ myWindows::myWindows(QWidget *parent) :QWidget(parent)
     layoutGlobal->addWidget(columnView);
 
     //Get event even if not in front
-    KeyPressEater *eater = new KeyPressEater(this);
+    eater = new KeyPressEater(this);
     preview->installEventFilter(eater);
 
     this->setLayout(layoutGlobal);
@@ -93,7 +93,7 @@ void myWindows::clickedNew(QModelIndex index,QModelIndex index2){
     QString ext = fileName.split(".").back();
 
     if (ext.toLower() == "jpg" || ext.toLower() == "png") {
-        lastFilePath = new QString(filePath);
+        lastFilePath = QString(filePath);
         QPixmap imtmp(filePath);
         QPixmap imtmp2 = imtmp.scaledToHeight(sizePreviewH, Qt::SmoothTransformation);
         if (imtmp2.width() > sizePreviewW) {
@@ -112,17 +112,16 @@ void myWindows::keyboardEvent(){
     //qDebug() << "SPACE ";
     if (preview->showing) {
         preview->hidePreview();
-        this->setFocus();
     } else {
         if (lastFilePath != NULL) {
-            preview->showImage(*lastFilePath);
-            preview->setFocus();
+            preview->showImage(lastFilePath);
+            preview->activateWindow();
         }
     }
 }
 
-void myWindows::keyPressEvent(QKeyEvent* event) {
-    if(event->type() == QEvent::KeyPress) {
+void myWindows::keyPressEvent(QKeyEvent*) {
+    /*if(event->type() == QEvent::KeyPress) {
         if (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down) {
                     qDebug() << "Key up/down recu";
         }else{
@@ -131,12 +130,9 @@ void myWindows::keyPressEvent(QKeyEvent* event) {
     }
     if(event->type() == QEvent::ShortcutOverride) {
         qDebug() << "Override recu";
-    }
+    }*/
 }
 
 myWindows::~myWindows(){
-    //delete layoutGlobal;//Will delete layoutPreview
-    //delete shortcut;
-    //delete screen;
-    //delete preview;
+    delete eater;
 }
