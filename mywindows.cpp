@@ -42,7 +42,7 @@ myWindows::myWindows(QWidget *parent) :QWidget(parent)
     lab->setMaximumHeight(screenH-sizeCol-100);
 
 
-    lab->setPixmap(QPixmap("test.png"));
+    lab->setPixmap(QPixmap(":/images/test.png"));
 
     info = new fileInfo;
 

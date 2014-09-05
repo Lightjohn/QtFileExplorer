@@ -7,10 +7,12 @@ imagePreview::imagePreview(QWidget *parent) :
     image = new QLabel("Wrong image chosen");
     image->setStyleSheet("QLabel { background-color : black; }");
     image->setAlignment(Qt::AlignCenter);
+    image->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(image);
     showing = false;
     isFullScreen = false;
     this->setLayout(layout);
+    this->setGeometry(50,50,image->width(),image->height());
 }
 
 void imagePreview::showImage(QString path){
@@ -20,7 +22,11 @@ void imagePreview::showImage(QString path){
 }
 
 void imagePreview::hidePreview(){
+    if (isFullScreen) {
+       fullScreen();
+    }
     this->hide();
+
     showing = false;
 }
 
@@ -32,7 +38,7 @@ void imagePreview::updateImage(QPixmap im){
     QPixmap tmp;
     //Replace all of that by some computation on size and do one resize only
     if (im.height() > im.width()) {
-        tmp = im.scaledToHeight(height - 100, Qt::SmoothTransformation);
+        tmp = im.scaledToHeight(height - 20, Qt::SmoothTransformation);
     }else{
         tmp = im;
     }
@@ -41,7 +47,7 @@ void imagePreview::updateImage(QPixmap im){
     }else{
         image->setPixmap(tmp);
     }
-    this->adjustSize();
+    //this->adjustSize();
 }
 
 void imagePreview::fullScreen(){

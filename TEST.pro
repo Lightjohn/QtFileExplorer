@@ -25,3 +25,8 @@ HEADERS  += \
     keypresseater.h
 
 FORMS    +=
+
+OTHER_FILES +=
+
+RESOURCES += \
+    ressources.qrc
