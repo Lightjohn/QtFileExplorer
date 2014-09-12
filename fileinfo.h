@@ -13,6 +13,7 @@ public:
     explicit fileInfo(QWidget *parent = 0);
     void setName(QString name);
     void setSize(int size);
+    void setResolution(int width,int height);
     ~fileInfo();
 
 signals:
@@ -24,7 +25,11 @@ private:
     QString commonSize;
     QString commonSizeEnd;
     QString fontSize;
+    QString width;
+    QString height;
 
+    QLabel *labelWidth;
+    QLabel *labelHeight;
     QLabel *name;
     QLabel *size;
     QVBoxLayout *layout;

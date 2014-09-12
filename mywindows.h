@@ -25,6 +25,8 @@
 #include <QGuiApplication>
 #include <QKeyEvent>
 #include <QShortcut>
+#include <QDesktopServices>
+#include <QUrl>
 
 #include "imagepreview.h"
 #include "fileinfo.h"
@@ -41,21 +43,22 @@ public:
     void keyPressEvent(QKeyEvent *event);
     ~myWindows();
     QShortcut *shortcut;
+    QShortcut *shortcutEnter;
     QColumnView *columnView;
     QFileSystemModel *model;
     imagePreview *preview;
     int screenH;
     int screenW;
-
 public slots:
 
     void clickedNew(QModelIndex index, QModelIndex index2);
     void keyboardEvent();
+    void keyboardEnter();
 
 private:
     int sizePreviewW;
     int sizePreviewH;
-
+    QPixmap imDef;
     QScreen *screen;
     QVBoxLayout *layoutGlobal;
     QHBoxLayout *layoutPreview;
@@ -63,6 +66,7 @@ private:
     fileInfo *info;
     QString lastFilePath;
     KeyPressEater *eater;
+
 
 };
 

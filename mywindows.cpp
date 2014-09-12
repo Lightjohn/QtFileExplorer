@@ -37,26 +37,21 @@ myWindows::myWindows(QWidget *parent) :QWidget(parent)
 
     layoutPreview = new QHBoxLayout;
 
-
     lab = new QLabel("image ici");
     lab->setMaximumHeight(screenH-sizeCol-100);
-
-
-    lab->setPixmap(QPixmap(":/images/test.png"));
+    imDef = QPixmap(":/images/test.png");
+    lab->setPixmap(imDef);
 
     info = new fileInfo;
 
-
-
     //Column view part
-
     model = new QFileSystemModel(this);
     model->setRootPath(QDir::rootPath());
 
     columnView = new QColumnView(this);
     columnView->setMinimumHeight(sizeCol);
     columnView->setModel(model);
-    columnView->setRootIndex(model->setRootPath(QDir::homePath()));
+    //columnView->setRootIndex(model->setRootPath(QDir::rootPath()));
     QItemSelectionModel* itSel = columnView->selectionModel();
 
     //Keyboard
@@ -65,8 +60,13 @@ myWindows::myWindows(QWidget *parent) :QWidget(parent)
     shortcut = new QShortcut(QKeySequence(Qt::Key_Space), this);
     shortcut->setContext(Qt::ApplicationShortcut);
 
+    //global enter shortcut
+    shortcutEnter = new QShortcut(QKeySequence(Qt::Key_Return), this);
+    shortcutEnter->setContext(Qt::ApplicationShortcut);
+
     //Qconnect
     QObject::connect(shortcut,SIGNAL(activated()),this, SLOT(keyboardEvent()));
+    QObject::connect(shortcutEnter,SIGNAL(activated()),this, SLOT(keyboardEnter()));
     //Listen to qColumnView click
     QObject::connect(itSel,SIGNAL(currentChanged(QModelIndex,QModelIndex)),this,SLOT(clickedNew(QModelIndex,QModelIndex)));
 
@@ -86,13 +86,14 @@ myWindows::myWindows(QWidget *parent) :QWidget(parent)
 }
 
 //The actionb called by the column view when the user do something
-void myWindows::clickedNew(QModelIndex index,QModelIndex index2){
-    index2.row();//useless just to remove warning
+void myWindows::clickedNew(QModelIndex index,QModelIndex){
     QString fileName = model->fileName(index);
     QString filePath = model->filePath(index);
     QString ext = fileName.split(".").back();
-
-    if (ext.toLower() == "jpg" || ext.toLower() == "png") {
+    info->setName(fileName);
+    info->setSize(model->size(index));
+    info->setResolution(0,0);
+    if (ext.toLower() == "jpg" || ext.toLower() == "jpeg" || ext.toLower() == "png") {
         lastFilePath = QString(filePath);
         QPixmap imtmp(filePath);
         QPixmap imtmp2 = imtmp.scaledToHeight(sizePreviewH, Qt::SmoothTransformation);
@@ -101,11 +102,11 @@ void myWindows::clickedNew(QModelIndex index,QModelIndex index2){
         }else{
             lab->setPixmap(imtmp2);
         }
-        //lab->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        info->setResolution(imtmp.width(),imtmp.height());
         preview->updateImage(imtmp);
+    }else{
+        lab->setPixmap(imDef);
     }
-    info->setName(fileName);
-    info->setSize(model->size(index));
 }
 
 void myWindows::keyboardEvent(){
@@ -120,12 +121,16 @@ void myWindows::keyboardEvent(){
     }
 }
 
+void myWindows::keyboardEnter(){
+    QDesktopServices::openUrl(QUrl::fromLocalFile(lastFilePath));
+}
+
 void myWindows::keyPressEvent(QKeyEvent*) {
     /*if(event->type() == QEvent::KeyPress) {
-        if (event->key() == Qt::Key_Up || event->key() == Qt::Key_Down) {
-                    qDebug() << "Key up/down recu";
+        if (event->key() == Qt::Key_Enter) {
+                    qDebug() << "Key Enter";
         }else{
-            qDebug() << "Key recu";
+            qDebug() << "Key recu"<<event->key();
         }
     }
     if(event->type() == QEvent::ShortcutOverride) {

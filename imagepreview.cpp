@@ -26,18 +26,16 @@ void imagePreview::hidePreview(){
        fullScreen();
     }
     this->hide();
-
     showing = false;
 }
 
 void imagePreview::updateImage(QPixmap im){
-
     int height = ((myWindows*)(this->parent()))->screenH;
     int width = ((myWindows*)(this->parent()))->screenW;
 
     QPixmap tmp;
     //Replace all of that by some computation on size and do one resize only
-    if (im.height() > im.width()) {
+    if (im.height() > height) {
         tmp = im.scaledToHeight(height - 20, Qt::SmoothTransformation);
     }else{
         tmp = im;
@@ -47,7 +45,10 @@ void imagePreview::updateImage(QPixmap im){
     }else{
         image->setPixmap(tmp);
     }
-    //this->adjustSize();
+    if (!isFullScreen) {
+        this->adjustSize();
+    }
+
 }
 
 void imagePreview::fullScreen(){
