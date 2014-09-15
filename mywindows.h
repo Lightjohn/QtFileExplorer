@@ -26,6 +26,7 @@
 #include <QKeyEvent>
 #include <QShortcut>
 #include <QDesktopServices>
+#include <QModelIndexList>
 #include <QUrl>
 
 #include "imagepreview.h"
@@ -54,6 +55,8 @@ public slots:
     void clickedNew(QModelIndex index, QModelIndex index2);
     void keyboardEvent();
     void keyboardEnter();
+    void fileMoved(QString path, QString oldNameFile, QString newNameFile);
+    void keyReleaseEvent(QKeyEvent* event);
 
 private:
     int sizePreviewW;
@@ -64,9 +67,10 @@ private:
     QHBoxLayout *layoutPreview;
     QLabel *lab;
     fileInfo *info;
+    QString lastImagePath;
     QString lastFilePath;
     KeyPressEater *eater;
-
+    bool isShiftOn = false;
 
 };
 
