@@ -70,7 +70,7 @@ private:
     QString lastImagePath;
     QString lastFilePath;
     KeyPressEater *eater;
-    bool isShiftOn = false;
+    bool isShiftOn;
 
 };
 

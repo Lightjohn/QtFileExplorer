@@ -13,6 +13,7 @@ myWindows::myWindows(QWidget *parent) :QWidget(parent)
     sizePreviewH = 512;
     sizePreviewW = 512;
 
+    isShiftOn = false;
     //Globale layout
     // _____Vlayout______
     // |                |
