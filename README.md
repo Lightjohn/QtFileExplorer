@@ -24,4 +24,4 @@ The application remember the last path used and will use it on launch.
 
 To leave the fullscreen mode: *ESC*, *DOUBLE-CLIC*, *SPACE*
 
-![Alt text](example.png?raw=true "Example")
+![Alt text](example2.png?raw=true "Example")
