@@ -7,7 +7,7 @@ Use Miller Columns to explore files and folder.
 
 It support only images for now but can be improve.
 
-Functionnalities
+Functionalities
 ================
 
 *SPACE* : Launch preview mode (images only).
