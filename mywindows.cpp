@@ -49,26 +49,35 @@ myWindows::myWindows(QWidget *parent) :QWidget(parent)
     model = new QFileSystemModel(this);
     model->setRootPath(QDir::rootPath());
 
+    //Loading preferences
+    loadSettings();
 
     columnView = new QColumnView(this);
     columnView->setMinimumHeight(sizeCol);
     columnView->setModel(model);
-    //columnView->setRootIndex(model->setRootPath(QDir::rootPath()));
+    //tree->setRootIndex(model->index(QDir::currentPath()));
+    columnView->setCurrentIndex(model->index(lastPath));
+    //columnView->setRootIndex());
     QItemSelectionModel* itSel = columnView->selectionModel();
 
     //Keyboard
 
     //global space shortcut
-    shortcut = new QShortcut(QKeySequence(Qt::Key_Space), this);
-    shortcut->setContext(Qt::ApplicationShortcut);
+    shortcutSpace = new QShortcut(QKeySequence(Qt::Key_Space), this);
+    shortcutSpace->setContext(Qt::ApplicationShortcut);
 
     //global enter shortcut
     shortcutEnter = new QShortcut(QKeySequence(Qt::Key_Return), this);
     shortcutEnter->setContext(Qt::ApplicationShortcut);
 
+    //Global Supr Shortcut
+    shortcutDel = new QShortcut(QKeySequence(Qt::Key_Delete), this);
+    shortcutDel->setContext(Qt::ApplicationShortcut);
+
     //Qconnect
-    QObject::connect(shortcut,SIGNAL(activated()),this, SLOT(keyboardEvent()));
+    QObject::connect(shortcutSpace,SIGNAL(activated()),this, SLOT(keyboardEvent()));
     QObject::connect(shortcutEnter,SIGNAL(activated()),this, SLOT(keyboardEnter()));
+    QObject::connect(shortcutDel,SIGNAL(activated()),this, SLOT(keyboardDel()));
     //Listen to qColumnView click
     //Selection of a file
     QObject::connect(itSel,SIGNAL(currentChanged(QModelIndex,QModelIndex)),this,SLOT(clickedNew(QModelIndex,QModelIndex)));
@@ -89,12 +98,34 @@ myWindows::myWindows(QWidget *parent) :QWidget(parent)
     this->show();
 }
 
+//Update variable last*Path AND if shift is on remember all selected files
+void myWindows::updatePath(QModelIndex index){
+    lastFilePath = model->filePath(index);
+    QFileInfo infoFile(lastFilePath);
+    lastPath = infoFile.canonicalPath();
+    if (isShiftOn) {
+        shiftList.append(lastFilePath);
+    }else{
+        shiftList.clear();
+        shiftList.append(lastFilePath);
+    }
+}
+
 //The actionb called by the column view when the user do something
 void myWindows::clickedNew(QModelIndex index,QModelIndex){
+    updatePath(index);
     QString fileName = model->fileName(index);
-    lastFilePath = model->filePath(index);
     QString ext = fileName.split(".").back();
-    info->setName(fileName);
+    if (fileName.length() > 200) {
+        info->setName(fileName.mid(0,200));
+    }else{
+        info->setName(fileName);
+    }
+    if (fileName.split(".").length() == 1) {
+        info->setType("Not a standard file");
+    } else {
+        info->setType(ext.toLower());
+    }
     info->setSize(model->size(index));
     info->setResolution(0,0);
     //If it's an image we update the previews and the informations
@@ -151,6 +182,46 @@ void myWindows::keyReleaseEvent(QKeyEvent* event)
         //qDebug() <<"You Release Key " <<event->text();
         isShiftOn = false;
     }
+}
+
+void myWindows::loadSettings(){
+    QSettings settings("IntCorpLightAssociation", "FileViewer");
+    lastPath = settings.value("lastPath").toString();
+}
+void myWindows::saveSettings(){
+    QSettings settings("IntCorpLightAssociation", "FileViewer");
+    settings.setValue("lastPath", lastPath);
+}
+
+void myWindows::keyboardDel(){
+    QMessageBox box;
+    box.setText("Selected files/folders will be eternally deleted !!");
+    box.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+    box.setDefaultButton(QMessageBox::Ok);
+    int ret = box.exec();
+    if (ret == QMessageBox::Ok) {
+        //qDebug() << "BIM ";
+        for (int i = 0; i < shiftList.length(); ++i) {
+            //qDebug() << "DELETE" << shiftList.at(i);
+            QFileInfo tmp(shiftList.at(i));
+            if (tmp.isFile()) {
+                QFile file(shiftList.at(i));
+                if (!file.remove()) {
+                    qDebug()<<"File not deleted: "<<file.fileName();
+                }
+            } else {
+                QDir folder(shiftList.at(i));
+                if (!folder.removeRecursively()) {
+                    qDebug()<<"Not all wasdeleted: "<<folder.absolutePath();
+                }
+            }
+        }
+        //qDebug() << "";
+    }
+}
+
+void myWindows::closeEvent(QCloseEvent*){
+    saveSettings();
 }
 
 myWindows::~myWindows(){

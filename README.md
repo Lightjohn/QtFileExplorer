@@ -15,6 +15,12 @@ In the functionnalities:
 
 *Double Clic* : If there is a double click on preview mode then the fullscreen mode is activated.
 
+*Suppr*: Delete the folder/file selected, also work with shift selected folders/files.
+
+**WARNING ** Suppr does not move to trash, will delete recursively a folder...
+
+The application remember the last path used and will use it on launch.   
+
 To leave the fullscreen mode: *ESC*, *DOUBLE-CLIC*, *SPACE*
 
 ![Alt text](example.png?raw=true "Example")

@@ -3,7 +3,7 @@
 # Project created by QtCreator 2014-08-12T15:28:35
 #
 #-------------------------------------------------
-
+config += static
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets

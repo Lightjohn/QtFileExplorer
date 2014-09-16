@@ -11,23 +11,31 @@ fileInfo::fileInfo(QWidget *parent) :
     fontSize = QString("font: 14pt;");
     width = QString("Width: Unknown");
     height = QString("Height: Unknown");
+    fileType = QString("Type: Unknown");
 
     name = new QLabel(commonName+"No file chosen");
     size = new QLabel(commonSize+"0");
     labelWidth = new QLabel(width);
     labelHeight = new QLabel(height);
+    type = new QLabel(fileType);
 
     name->setStyleSheet(fontSize);
     size->setStyleSheet(fontSize);
     labelWidth->setStyleSheet(fontSize);
     labelHeight->setStyleSheet(fontSize);
+    type->setStyleSheet(fontSize);
 
     layout->addWidget(name);
     layout->addWidget(labelWidth);
     layout->addWidget(labelHeight);
+    layout->addWidget(type);
     layout->addWidget(size);
 
     this->setLayout(layout);
+}
+
+void fileInfo::setType(QString ext){
+    type->setText("Type: "+ext);
 }
 
 void fileInfo::setName(QString nameIn){

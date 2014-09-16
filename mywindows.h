@@ -28,6 +28,9 @@
 #include <QDesktopServices>
 #include <QModelIndexList>
 #include <QUrl>
+#include <QSettings>
+#include <QCloseEvent>
+#include <QMessageBox>
 
 #include "imagepreview.h"
 #include "fileinfo.h"
@@ -43,22 +46,28 @@ public:
     explicit myWindows(QWidget *parent = 0);
     void keyPressEvent(QKeyEvent *event);
     ~myWindows();
-    QShortcut *shortcut;
+    QShortcut *shortcutSpace;
     QShortcut *shortcutEnter;
+    QShortcut *shortcutDel;
     QColumnView *columnView;
     QFileSystemModel *model;
     imagePreview *preview;
     int screenH;
     int screenW;
+    void closeEvent(QCloseEvent *);
 public slots:
 
     void clickedNew(QModelIndex index, QModelIndex index2);
     void keyboardEvent();
     void keyboardEnter();
+    void keyboardDel();
     void fileMoved(QString path, QString oldNameFile, QString newNameFile);
     void keyReleaseEvent(QKeyEvent* event);
 
 private:
+    void loadSettings();
+    void saveSettings();
+    void updatePath(QModelIndex index);
     int sizePreviewW;
     int sizePreviewH;
     QPixmap imDef;
@@ -69,9 +78,10 @@ private:
     fileInfo *info;
     QString lastImagePath;
     QString lastFilePath;
+    QString lastPath;
     KeyPressEater *eater;
     bool isShiftOn;
-
+    QStringList shiftList;
 };
 
 #endif // MYWINDOWS_H
