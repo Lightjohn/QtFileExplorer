@@ -15,9 +15,9 @@ In the functionnalities:
 
 *Double Clic* : If there is a double click on preview mode then the fullscreen mode is activated.
 
-*Suppr*: Delete the folder/file selected, also work with shift selected folders/files.
+*Suppr* : Delete the folder/file selected, also work with shift selected folders/files.
 
-**WARNING ** Suppr does not move to trash, will delete recursively a folder...
+**WARNING** Suppr does not move to trash, will delete recursively a folder...
 
 The application remember the last path used and will use it on launch.   
 
