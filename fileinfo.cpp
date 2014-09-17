@@ -1,5 +1,19 @@
 #include "fileinfo.h"
 
+/*  Informations displayed
+ *
+ *  NAME : filename, size limited to xx char see mywindows.cpp
+ *
+ *  WIDTH : int or 0 if not a image
+ *
+ *  HEIGHT : int or 0 if not a image
+ *
+ *  TYPE : extension of the file or "Not a standard file"
+ *
+ *  SIZE : size in B, KB, GB..
+ *
+ **/
+
 fileInfo::fileInfo(QWidget *parent) :
     QWidget(parent)
 {

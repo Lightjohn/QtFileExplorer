@@ -3,7 +3,7 @@
 imagePreview::imagePreview(QWidget *parent) :
     QWidget(parent,Qt::Window)
 {
-    layout = new QVBoxLayout;
+    layout = new QVBoxLayout(this);
     image = new QLabel("Wrong image chosen");
     image->setStyleSheet("QLabel { background-color : black; }");
     image->setAlignment(Qt::AlignCenter);
@@ -11,7 +11,6 @@ imagePreview::imagePreview(QWidget *parent) :
     layout->addWidget(image);
     showing = false;
     isFullScreen = false;
-    this->setLayout(layout);
     this->setGeometry(50,50,image->width(),image->height());
 }
 
@@ -19,14 +18,6 @@ void imagePreview::showImage(QString path){
     updateImage(path);
     showing = true;
     this->show();
-}
-
-void imagePreview::hidePreview(){
-    if (isFullScreen) {
-       fullScreen();
-    }
-    this->hide();
-    showing = false;
 }
 
 void imagePreview::updateImage(QPixmap im){
@@ -48,9 +39,20 @@ void imagePreview::updateImage(QPixmap im){
     if (!isFullScreen) {
         this->adjustSize();
     }
-
 }
 
+//This function is called when we want to have the opposite effect as the actual one
+//Hided -> Shown
+//Shown -> Hided
+void imagePreview::hidePreview(){
+    if (isFullScreen) {
+       fullScreen();
+    }
+    this->hide();
+    showing = false;
+}
+
+//Same idea that hidePreview: we got from fullScreen to normal or vice versa according to actual state
 void imagePreview::fullScreen(){
     if (isFullScreen) {
         this->showNormal();
@@ -60,6 +62,7 @@ void imagePreview::fullScreen(){
     isFullScreen = !isFullScreen;
 }
 
+//If the user close manually the preview windows
 void imagePreview::closeEvent(QCloseEvent*)
 {
     showing = false;

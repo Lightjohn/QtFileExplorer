@@ -49,6 +49,8 @@ myWindows::myWindows(QWidget *parent) :QWidget(parent)
     model = new QFileSystemModel(this);
     model->setRootPath(QDir::rootPath());
 
+    model->setReadOnly(false);
+
     //Loading preferences
     loadSettings();
 
@@ -60,6 +62,10 @@ myWindows::myWindows(QWidget *parent) :QWidget(parent)
     //columnView->setRootIndex());
     QItemSelectionModel* itSel = columnView->selectionModel();
 
+    //Adding rename
+
+    QPushButton *rename = new QPushButton("Rename");
+
     //Keyboard
 
     //global space shortcut
@@ -68,7 +74,7 @@ myWindows::myWindows(QWidget *parent) :QWidget(parent)
 
     //global enter shortcut
     shortcutEnter = new QShortcut(QKeySequence(Qt::Key_Return), this);
-    shortcutEnter->setContext(Qt::ApplicationShortcut);
+    //shortcutEnter->setContext(Qt::ApplicationShortcut);
 
     //Global Supr Shortcut
     shortcutDel = new QShortcut(QKeySequence(Qt::Key_Delete), this);
@@ -81,13 +87,14 @@ myWindows::myWindows(QWidget *parent) :QWidget(parent)
     //Listen to qColumnView click
     //Selection of a file
     QObject::connect(itSel,SIGNAL(currentChanged(QModelIndex,QModelIndex)),this,SLOT(clickedNew(QModelIndex,QModelIndex)));
-    QObject::connect(model,SIGNAL(fileRenamed(QString,QString,QString)),this,SLOT(fileMoved(QString,QString,QString)));
+    QObject::connect(rename,SIGNAL(clicked()),this,SLOT(rename()));
 
     //Adding
     layoutPreview->addWidget(lab);
     layoutPreview->addWidget(info);
     layoutGlobal->addLayout(layoutPreview);
     layoutGlobal->addWidget(columnView);
+    layoutGlobal->addWidget(rename);
 
     //Get event even if not in front
     eater = new KeyPressEater(this);
@@ -115,9 +122,10 @@ void myWindows::updatePath(QModelIndex index){
 void myWindows::clickedNew(QModelIndex index,QModelIndex){
     updatePath(index);
     QString fileName = model->fileName(index);
-    QString ext = fileName.split(".").back();
-    if (fileName.length() > 200) {
-        info->setName(fileName.mid(0,200));
+    QString ext = fileName.split(".").back(); //We could use here QFileInfo::completeSuffix()
+    int SIZE_NAME_MAX = 50;
+    if (fileName.length() > SIZE_NAME_MAX) {
+        info->setName(fileName.mid(0,SIZE_NAME_MAX));
     }else{
         info->setName(fileName);
     }
@@ -161,11 +169,8 @@ void myWindows::keyboardEvent(){
 
 //Function to watch the global shortcut SPACE that is for opening the file with default app
 void myWindows::keyboardEnter(){
+    qDebug() << "ENTER ";
     QDesktopServices::openUrl(QUrl::fromLocalFile(lastFilePath));
-}
-
-void myWindows::fileMoved(QString path, QString oldNameFile, QString newNameFile){
-    qDebug()<<path<<" "<<oldNameFile<<" "<<newNameFile;
 }
 
 //Debug funtion to show all keyboard event
@@ -173,6 +178,44 @@ void myWindows::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Shift) {
         //qDebug() << "Key Shift";
         isShiftOn = true;
+    }
+}
+
+void myWindows::rename(){
+    bool ok;
+    QString text = QInputDialog::getText(this, tr("Renamming"), tr("base name:"), QLineEdit::Normal,"", &ok);
+    int num = 0;
+    if (ok){
+        for (int var = 0; var < shiftList.length(); ++var) {
+           _rename(shiftList.at(var),text,&num);
+        }
+    }
+}
+
+void myWindows::_rename(QString path, QString newName,int *num){
+    QFileInfo tmp(path);
+    if (tmp.isFile()) {
+        QFile file(path);
+        QString newConstructedName = tmp.canonicalPath()+QDir::separator()+newName;
+        //If the name if something XXX-01 else 01
+        if (newName != "") {
+            newConstructedName += "-";
+        }
+        newConstructedName += QString::number(*num);
+        //if the file had an extension we keep it else nothing
+        // prev.jpg -> XXX-01.jpg
+        if (tmp.completeSuffix() != "") {
+            newConstructedName += "."+tmp.completeSuffix();
+        }
+        file.rename(newConstructedName);
+        *num = *num + 1;
+    } else if (tmp.isDir()){
+        //If we have a dir we get folders and files inside and try to rename them
+        QDir fold(path);
+        QStringList elmts = fold.entryList(QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files);
+        for (int var = 0; var < elmts.length(); ++var) {
+            _rename(path+QDir::separator()+elmts.at(var), newName ,num);
+        }
     }
 }
 
@@ -220,6 +263,10 @@ void myWindows::keyboardDel(){
     }
 }
 
+//To add coloration to folders/files
+//http://stackoverflow.com/questions/1397484/custom-text-color-for-certain-indexes-in-qtreeview
+
+//When the app is closed we saved what is necessary to save
 void myWindows::closeEvent(QCloseEvent*){
     saveSettings();
 }

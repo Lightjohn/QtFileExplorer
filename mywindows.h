@@ -31,6 +31,7 @@
 #include <QSettings>
 #include <QCloseEvent>
 #include <QMessageBox>
+#include <QInputDialog>
 
 #include "imagepreview.h"
 #include "fileinfo.h"
@@ -55,21 +56,26 @@ public:
     int screenH;
     int screenW;
     void closeEvent(QCloseEvent *);
-public slots:
 
+public slots:
     void clickedNew(QModelIndex index, QModelIndex index2);
     void keyboardEvent();
     void keyboardEnter();
     void keyboardDel();
-    void fileMoved(QString path, QString oldNameFile, QString newNameFile);
+    void rename();
     void keyReleaseEvent(QKeyEvent* event);
 
 private:
+    void _rename(QString path, QString newName, int *num);
     void loadSettings();
     void saveSettings();
     void updatePath(QModelIndex index);
+
     int sizePreviewW;
     int sizePreviewH;
+
+    bool isShiftOn;
+
     QPixmap imDef;
     QScreen *screen;
     QVBoxLayout *layoutGlobal;
@@ -80,7 +86,6 @@ private:
     QString lastFilePath;
     QString lastPath;
     KeyPressEater *eater;
-    bool isShiftOn;
     QStringList shiftList;
 };
 
