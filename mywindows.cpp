@@ -169,7 +169,7 @@ void myWindows::keyboardEvent(){
 
 //Function to watch the global shortcut SPACE that is for opening the file with default app
 void myWindows::keyboardEnter(){
-    qDebug() << "ENTER ";
+    //qDebug() << "ENTER ";
     QDesktopServices::openUrl(QUrl::fromLocalFile(lastFilePath));
 }
 
@@ -201,7 +201,14 @@ void myWindows::_rename(QString path, QString newName,int *num){
         if (newName != "") {
             newConstructedName += "-";
         }
-        newConstructedName += QString::number(*num);
+        if (*num >= 10) {
+            if (*num < 100) {
+                newConstructedName += QString("0");
+            }
+        } else {
+            newConstructedName += QString("00");
+        }
+         newConstructedName += QString::number(*num);
         //if the file had an extension we keep it else nothing
         // prev.jpg -> XXX-01.jpg
         if (tmp.completeSuffix() != "") {
@@ -240,6 +247,7 @@ void myWindows::keyboardDel(){
     QMessageBox box;
     box.setText("Selected files/folders will be eternally deleted !!");
     box.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+    box.setWindowFlags(Qt::WindowStaysOnTopHint);
     box.setDefaultButton(QMessageBox::Ok);
     int ret = box.exec();
     if (ret == QMessageBox::Ok) {
