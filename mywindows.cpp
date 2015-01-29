@@ -122,6 +122,7 @@ void myWindows::updatePath(QModelIndex index){
 void myWindows::clickedNew(QModelIndex index,QModelIndex){
     updatePath(index);
     QString fileName = model->fileName(index);
+    QFileInfo infoFile(lastFilePath);
     QString ext = fileName.split(".").back(); //We could use here QFileInfo::completeSuffix()
     int SIZE_NAME_MAX = 50;
     if (fileName.length() > SIZE_NAME_MAX) {
@@ -137,7 +138,7 @@ void myWindows::clickedNew(QModelIndex index,QModelIndex){
     info->setSize(model->size(index));
     info->setResolution(0,0);
     //If it's an image we update the previews and the informations
-    if (ext.toLower() == "jpg" || ext.toLower() == "jpeg" || ext.toLower() == "png") {
+    if (infoFile.isFile() && (ext.toLower() == "jpg" || ext.toLower() == "jpeg" || ext.toLower() == "png")) {
         lastImagePath = QString(lastFilePath);
         QPixmap imtmp(lastFilePath);
         QPixmap imtmp2 = imtmp.scaledToHeight(sizePreviewH, Qt::SmoothTransformation);
@@ -263,7 +264,7 @@ void myWindows::keyboardDel(){
             } else {
                 QDir folder(shiftList.at(i));
                 if (!folder.removeRecursively()) {
-                    qDebug()<<"Not all wasdeleted: "<<folder.absolutePath();
+                    qDebug()<<"Not all was deleted: "<<folder.absolutePath();
                 }
             }
         }
