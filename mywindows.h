@@ -1,6 +1,10 @@
 #ifndef MYWINDOWS_H
 #define MYWINDOWS_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <iostream>
+
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -11,7 +15,6 @@
 #include <QFileSystemModel>
 #include <QTableView>
 #include <QHBoxLayout>
-#include <stdio.h>
 #include <QHeaderView>
 #include <QStandardItemModel>
 #include <QColumnView>

@@ -13,6 +13,12 @@ myWindows::myWindows(QWidget *parent) :QWidget(parent)
     sizePreviewH = 512;
     sizePreviewW = 512;
 
+    int minPrev = screenH-sizeCol;
+    if(minPrev < sizePreviewH) {
+        sizePreviewH = minPrev;
+        sizePreviewW = minPrev;
+    }
+
     isShiftOn = false;
     //Globale layout
     // _____Vlayout______
@@ -39,7 +45,7 @@ myWindows::myWindows(QWidget *parent) :QWidget(parent)
     layoutPreview = new QHBoxLayout;
 
     lab = new QLabel("image ici");
-    lab->setMaximumHeight(screenH-sizeCol-100);
+    lab->setMaximumHeight(sizePreviewH-110);
     imDef = QPixmap(":/images/test.png");
     lab->setPixmap(imDef);
 
