@@ -136,7 +136,7 @@ void myWindows::clickedNew(QModelIndex index,QModelIndex){
     }else{
         info->setName(fileName);
     }
-    if (fileName.split(".").length() == 1 or fileName.split(".").length() >= 5) {
+    if (ext.length() == 1 or ext.length() >= 5) {
         info->setType("Not a standard file");
     } else {
         info->setType(ext.toLower());
