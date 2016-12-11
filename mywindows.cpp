@@ -144,21 +144,53 @@ void myWindows::clickedNew(QModelIndex index,QModelIndex){
     info->setSize(model->size(index));
     info->setResolution(0,0);
     //If it's an image we update the previews and the informations
-    if (infoFile.isFile() && (ext.toLower() == "jpg" || ext.toLower() == "jpeg" || ext.toLower() == "png")) {
-        lastImagePath = QString(lastFilePath);
-        QPixmap imtmp(lastFilePath);
-        QPixmap imtmp2 = imtmp.scaledToHeight(sizePreviewH, Qt::SmoothTransformation);
-        if (imtmp2.width() > sizePreviewW) {
-            lab->setPixmap(imtmp2.copy(0,0,sizePreviewW,sizePreviewH));
-        }else{
-            lab->setPixmap(imtmp2);
+    QString lowExt = ext.toLower();
+    if (infoFile.isFile() && isImage(lowExt)) {
+        updateImage();
+    }else if(infoFile.isDir()) {
+        // If there is an image inside we try to show it
+        QDir dir = QDir(lastFilePath);
+        dir.setFilter(QDir::Files);
+        QFileInfoList list = dir.entryInfoList();
+        bool found = false;
+        for (int i = 0; i < list.size(); ++i) {
+            QFileInfo fileInfo = list.at(i);
+            lowExt = fileInfo.suffix().toLower();
+            if (fileInfo.isFile() && isImage(lowExt)) {
+                updateImage(fileInfo.absoluteFilePath());
+                found = true;
+                break;
+            }
         }
-        info->setResolution(imtmp.width(),imtmp.height());
-        preview->updateImage(imtmp);
-    }else{
+        //else we show the default image if no file is an image
+        if (!found) {
+            lab->setPixmap(imDef);
+        }
+    } else {
         //else we show the default image
         lab->setPixmap(imDef);
     }
+}
+
+bool myWindows::isImage(QString suffix) {
+    return (suffix == "jpg" || suffix == "jpeg" || suffix == "png");
+}
+
+void myWindows::updateImage(){
+    updateImage(lastFilePath);
+}
+
+void myWindows::updateImage(QString image){
+    lastImagePath = QString(image); // For later in case of fullscreen
+    QPixmap imtmp(image);
+    QPixmap imtmp2 = imtmp.scaledToHeight(sizePreviewH, Qt::SmoothTransformation);
+    if (imtmp2.width() > sizePreviewW) {
+        lab->setPixmap(imtmp2.copy(0,0,sizePreviewW,sizePreviewH));
+    }else{
+        lab->setPixmap(imtmp2);
+    }
+    info->setResolution(imtmp.width(),imtmp.height());
+    preview->updateImage(imtmp);
 }
 
 //Function to watch the global shortcut SPACE that is for showing preview
@@ -194,7 +226,7 @@ void myWindows::rename(){
     int num = 0;
     if (ok){
         for (int var = 0; var < shiftList.length(); ++var) {
-           _rename(shiftList.at(var),text,&num);
+            _rename(shiftList.at(var),text,&num);
         }
     }
 }
@@ -215,7 +247,7 @@ void myWindows::_rename(QString path, QString newName,int *num){
         } else {
             newConstructedName += QString("00");
         }
-         newConstructedName += QString::number(*num);
+        newConstructedName += QString::number(*num);
         //if the file had an extension we keep it else nothing
         // prev.jpg -> XXX-01.jpg
         if (tmp.completeSuffix() != "") {

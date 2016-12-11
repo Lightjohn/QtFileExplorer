@@ -73,7 +73,9 @@ private:
     void loadSettings();
     void saveSettings();
     void updatePath(QModelIndex index);
-
+    void updateImage();
+    void updateImage(QString image);
+    bool isImage(QString suffix);
     int sizePreviewW;
     int sizePreviewH;
 
