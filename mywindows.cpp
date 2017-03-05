@@ -183,7 +183,11 @@ void myWindows::updateImage(){
 void myWindows::updateImage(QString image){
     lastImagePath = QString(image); // For later in case of fullscreen
     QPixmap imtmp(image);
+    if (imtmp.isNull()) { // in the case someone give a bad extension (png instead of jpg)...
+        imtmp = imDef;
+    }
     QPixmap imtmp2 = imtmp.scaledToHeight(sizePreviewH, Qt::SmoothTransformation);
+
     if (imtmp2.width() > sizePreviewW) {
         lab->setPixmap(imtmp2.copy(0,0,sizePreviewW,sizePreviewH));
     }else{
