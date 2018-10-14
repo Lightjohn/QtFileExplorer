@@ -75,9 +75,12 @@ private:
     void updatePath(QModelIndex index);
     void updateImage();
     void updateImage(QString image);
+    bool parseFolderAndUpdate(QString path, int depth);
     bool isImage(QString suffix);
     int sizePreviewW;
     int sizePreviewH;
+
+    int MAX_DEPTH = 2;
 
     bool isShiftOn;
 

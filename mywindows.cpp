@@ -54,8 +54,9 @@ myWindows::myWindows(QWidget *parent) :QWidget(parent)
     //Column view part
     model = new QFileSystemModel(this);
     model->setRootPath(QDir::rootPath());
-
+    model->setResolveSymlinks(true);
     model->setReadOnly(false);
+    model->setFilter(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::AllDirs | QDir::System);
 
     //Loading preferences
     loadSettings();
@@ -136,7 +137,7 @@ void myWindows::clickedNew(QModelIndex index,QModelIndex){
     }else{
         info->setName(fileName);
     }
-    if (ext.length() == 1 or ext.length() >= 5) {
+    if (ext.length() == 1 || ext.length() >= 5) {
         info->setType("Not a standard file");
     } else {
         info->setType(ext.toLower());
@@ -149,19 +150,7 @@ void myWindows::clickedNew(QModelIndex index,QModelIndex){
         updateImage();
     }else if(infoFile.isDir()) {
         // If there is an image inside we try to show it
-        QDir dir = QDir(lastFilePath);
-        dir.setFilter(QDir::Files);
-        QFileInfoList list = dir.entryInfoList();
-        bool found = false;
-        for (int i = 0; i < list.size(); ++i) {
-            QFileInfo fileInfo = list.at(i);
-            lowExt = fileInfo.suffix().toLower();
-            if (fileInfo.isFile() && isImage(lowExt)) {
-                updateImage(fileInfo.absoluteFilePath());
-                found = true;
-                break;
-            }
-        }
+        bool found = parseFolderAndUpdate(lastFilePath, MAX_DEPTH);
         //else we show the default image if no file is an image
         if (!found) {
             lab->setPixmap(imDef);
@@ -172,8 +161,34 @@ void myWindows::clickedNew(QModelIndex index,QModelIndex){
     }
 }
 
+bool myWindows::parseFolderAndUpdate(QString path, int depth) {
+
+    QDir dir = QDir(path);
+    dir.setFilter(QDir::Files|QDir::Dirs|QDir::NoDotAndDotDot);
+    QString lowExt;
+    QFileInfoList list = dir.entryInfoList();
+    //qDebug() << depth << path << list.size();
+    bool found = false;
+    for (int i = 0; i < list.size(); ++i) {
+        QFileInfo fileInfo = list.at(i);
+        lowExt = fileInfo.suffix().toLower();
+        if (fileInfo.isFile() && isImage(lowExt)) {
+            updateImage(fileInfo.absoluteFilePath());
+            found = true;
+        } else if (fileInfo.isDir() && depth > 0) {
+            //qDebug() << "Deeper" << fileInfo.absoluteFilePath();
+            found = parseFolderAndUpdate(fileInfo.absoluteFilePath(), depth-1);
+        }
+        if (found) {
+            break;
+        }
+    }
+    return found;
+}
+
 bool myWindows::isImage(QString suffix) {
-    return (suffix == "jpg" || suffix == "jpeg" || suffix == "png");
+    QString lowSuffix = suffix.toLower();
+    return (lowSuffix == "jpg" || lowSuffix == "jpeg" || lowSuffix == "png");
 }
 
 void myWindows::updateImage(){
