@@ -1,3 +1,14 @@
+[![Build Status](https://travis-ci.org/Lightjohn/QtFileExplorer.svg?branch=master)](https://travis-ci.org/Lightjohn/QtFileExplorer)
+
+Build
+=====
+
+you will need `qt5-default` and `qt5-qmake` on Ubuntu
+
+`qmake` then `make -j 4`
+
+
+
 QtFileExplorer
 ==============
 
