@@ -9,4 +9,4 @@ install:
   - ls
 script:
   - qmake
-  - make
+  - make -j 2
