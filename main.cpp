@@ -1,14 +1,13 @@
-#include <QApplication>
 #include "mywindows.h"
-#include <QStandardItemModel>
+#include <QApplication>
 #include <QColumnView>
+#include <QStandardItemModel>
 
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
+int main(int argc, char *argv[]) {
+  QApplication a(argc, argv);
 
-    myWindows wid;
+  myWindows wid;
 
-    a.setObjectName("TEST");
-    return a.exec();
+  a.setObjectName("TEST");
+  return a.exec();
 }

@@ -1,105 +1,104 @@
 #ifndef MYWINDOWS_H
 #define MYWINDOWS_H
 
+#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
-#include <iostream>
 
-#include <QWidget>
-#include <QVBoxLayout>
-#include <QPushButton>
-#include <QLabel>
+#include <QCloseEvent>
+#include <QColumnView>
 #include <QDebug>
-#include <QPicture>
-#include <QPixmap>
+#include <QDesktopServices>
+#include <QDir>
 #include <QFileSystemModel>
-#include <QTableView>
+#include <QGuiApplication>
 #include <QHBoxLayout>
 #include <QHeaderView>
-#include <QStandardItemModel>
-#include <QColumnView>
-#include <QDir>
-#include <QModelIndex>
+#include <QInputDialog>
 #include <QItemSelectionModel>
-#include <QString>
-#include <QSizePolicy>
+#include <QKeyEvent>
+#include <QLabel>
+#include <QMessageBox>
+#include <QModelIndex>
+#include <QModelIndexList>
+#include <QPicture>
+#include <QPixmap>
+#include <QPushButton>
 #include <QRect>
 #include <QScreen>
-#include <QGuiApplication>
-#include <QKeyEvent>
-#include <QShortcut>
-#include <QDesktopServices>
-#include <QModelIndexList>
-#include <QUrl>
 #include <QSettings>
-#include <QCloseEvent>
-#include <QMessageBox>
-#include <QInputDialog>
+#include <QShortcut>
+#include <QSizePolicy>
+#include <QStandardItemModel>
+#include <QString>
+#include <QTableView>
 #include <QThreadPool>
+#include <QUrl>
+#include <QVBoxLayout>
+#include <QWidget>
 
-#include "imagepreview.h"
-#include "fileinfo.h"
-#include "keypresseater.h"
 #include "deletetask.h"
+#include "fileinfo.h"
+#include "imagepreview.h"
+#include "keypresseater.h"
 
 class imagePreview;
 class KeyPressEater;
 
-class myWindows : public QWidget
-{
-    Q_OBJECT
+class myWindows : public QWidget {
+  Q_OBJECT
 public:
-    explicit myWindows(QWidget *parent = 0);
-    void keyPressEvent(QKeyEvent *event);
-    ~myWindows();
-    QShortcut *shortcutSpace;
-    QShortcut *shortcutEnter;
-    QShortcut *shortcutDel;
-    QColumnView *columnView;
-    QFileSystemModel *model;
-    imagePreview *preview;
-    int screenH;
-    int screenW;
-    void closeEvent(QCloseEvent *);
+  explicit myWindows(QWidget *parent = 0);
+  void keyPressEvent(QKeyEvent *event);
+  ~myWindows();
+  QShortcut *shortcutSpace;
+  QShortcut *shortcutEnter;
+  QShortcut *shortcutDel;
+  QColumnView *columnView;
+  QFileSystemModel *model;
+  imagePreview *preview;
+  int screenH;
+  int screenW;
+  void closeEvent(QCloseEvent *);
 
 public slots:
-    void clickedNew(QModelIndex index, QModelIndex index2);
-    void keyboardEvent();
-    void keyboardEnter();
-    void keyboardDel();
-    void rename();
-    void keyReleaseEvent(QKeyEvent* event);
+  void clickedNew(QModelIndex index, QModelIndex index2);
+  void keyboardEvent();
+  void keyboardEnter();
+  void keyboardDel();
+  void rename();
+  void keyReleaseEvent(QKeyEvent *event);
 
 private:
-    void _rename(QString path, QString newName, int *num);
-    void loadSettings();
-    void saveSettings();
-    void updatePath(QModelIndex index);
-    void updateImage();
-    void updateImage(QString image);
-    bool parseFolderAndUpdate(QString path, int depth);
-    bool isImage(QString suffix);
-    int sizePreviewW;
-    int sizePreviewH;
+  void _rename(QString path, QString newName, int *num);
+  void loadSettings();
+  void saveSettings();
+  void updatePath(QModelIndex index);
+  void updateImage();
+  void updateImage(QString image);
+  bool parseFolderAndUpdate(QString path, int depth);
+  bool isImage(QString suffix);
+  int sizePreviewW;
+  int sizePreviewH;
 
-    int MAX_DEPTH = 2;
+  int MAX_DEPTH = 2;
 
-    bool isShiftOn;
+  bool isShiftOn;
 
-    QList<QString> *toDelete;
+  QList<QString> *toDelete;
 
-    QPixmap imDef;
-    QScreen *screen;
-    QVBoxLayout *layoutGlobal;
-    QHBoxLayout *layoutPreview;
-    QLabel *lab;
-    QLabel *deleteStatus;
-    fileInfo *info;
-    QString lastImagePath;
-    QString lastFilePath;
-    QString lastPath;
-    KeyPressEater *eater;
-    QStringList shiftList;
+  QPixmap imDef;
+  QScreen *screen;
+  QVBoxLayout *layoutGlobal;
+  QHBoxLayout *layoutPreview;
+  QLabel *lab;
+  QLabel *deleteStatus;
+  fileInfo *info;
+  QString lastImagePath;
+  QString lastFilePath;
+  QString lastPath;
+  KeyPressEater *eater;
+  QStringList shiftList;
 };
 
 #endif // MYWINDOWS_H
