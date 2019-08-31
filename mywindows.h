@@ -35,10 +35,12 @@
 #include <QCloseEvent>
 #include <QMessageBox>
 #include <QInputDialog>
+#include <QThreadPool>
 
 #include "imagepreview.h"
 #include "fileinfo.h"
 #include "keypresseater.h"
+#include "deletetask.h"
 
 class imagePreview;
 class KeyPressEater;
@@ -84,11 +86,14 @@ private:
 
     bool isShiftOn;
 
+    QList<QString> *toDelete;
+
     QPixmap imDef;
     QScreen *screen;
     QVBoxLayout *layoutGlobal;
     QHBoxLayout *layoutPreview;
     QLabel *lab;
+    QLabel *deleteStatus;
     fileInfo *info;
     QString lastImagePath;
     QString lastFilePath;

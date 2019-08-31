@@ -73,6 +73,12 @@ myWindows::myWindows(QWidget *parent) :QWidget(parent)
 
     QPushButton *rename = new QPushButton("Rename");
 
+    // All the thread deletion part
+
+    QThreadPool::globalInstance()->setMaxThreadCount(1);
+    toDelete = new QList<QString>;
+    deleteStatus = new QLabel("");
+
     //Keyboard
 
     //global space shortcut
@@ -102,6 +108,7 @@ myWindows::myWindows(QWidget *parent) :QWidget(parent)
     layoutGlobal->addLayout(layoutPreview);
     layoutGlobal->addWidget(columnView);
     layoutGlobal->addWidget(rename);
+    layoutGlobal->addWidget(deleteStatus);
 
     //Get event even if not in front
     eater = new KeyPressEater(this);
@@ -309,25 +316,14 @@ void myWindows::keyboardDel(){
     box.setDefaultButton(QMessageBox::Ok);
     int ret = box.exec();
     if (ret == QMessageBox::Ok) {
-        //qDebug() << "BIM ";
-        for (int i = 0; i < shiftList.length(); ++i) {
-            //qDebug() << "DELETE" << shiftList.at(i);
-            QFileInfo tmp(shiftList.at(i));
-            if (tmp.isFile()) {
-                QFile file(shiftList.at(i));
-                if (!file.remove()) {
-                    qDebug()<<"File not deleted: "<<file.fileName();
-                }
-            } else {
-                QDir folder(shiftList.at(i));
-                if (!folder.removeRecursively()) {
-                    qDebug()<<"Not all was deleted: "<<folder.absolutePath();
-                }
-            }
-        }
-        //qDebug() << "";
+
     }
+
+    deletetask *task = new deletetask(shiftList, deleteStatus, toDelete);
+    QThreadPool::globalInstance()->start(task);
 }
+
+
 
 //To add coloration to folders/files
 //http://stackoverflow.com/questions/1397484/custom-text-color-for-certain-indexes-in-qtreeview

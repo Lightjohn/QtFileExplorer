@@ -13,12 +13,14 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
+    deletetask.cpp \
     mywindows.cpp \
     fileinfo.cpp \
     imagepreview.cpp \
     keypresseater.cpp
 
 HEADERS  += \
+    deletetask.h \
     mywindows.h \
     fileinfo.h \
     imagepreview.h \
