@@ -1,1 +1,7 @@
 *.pro.*
+*.o
+TEST
+Makefile
+*.stash
+moc_*
+qrc_*
