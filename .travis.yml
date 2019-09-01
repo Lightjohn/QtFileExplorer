@@ -19,4 +19,4 @@ after_success:
   - git push https://${GH_TOKEN}@github.com/Lightjohn/QtFileExplorer.git
 env:
   global:
-    secure: MSrln06eDEVNboG2rDm/8K+5s2+k5ahb9zHKrWGIZv5Hl84tPNmHTYyScU5a0LqCnTO5l/Hm2v5ZWF0V4QMRLimr+QLUwEgnDk924dS8v1FuVEjCELnHEGVXRXiTfhIfDWlz2jlICyPerTbNNt1xzNhC9McjY8fh1vjPlY2wND0=
+    secure: USg7sjWCb69vKpA28diczd2Kj2saZBzqulaCoA0vL4XBjrH8Aacb1r+8z/SJbtsDZXXbQkCkL25NeYq8GLHbOBAm0XbohTSZNnYolV0/TFHTaQ4rVlOu/pN0emgRZmhaGX8kW/ezUx4i10u52jtgxmZh9Aoe5KwJgszYTPsRAZ0=
