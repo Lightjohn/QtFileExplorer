@@ -1,5 +1,4 @@
 language: cpp
-install: make get-deps
 dist: bionic
 compiler:
   - gcc
@@ -10,7 +9,7 @@ install:
 script:
   - qmake
   - make -j 2
- after_success:
+after_success:
   - clang-format -i -style=LLVM *.cpp *.h
   - git config --global user.email "travis@travis-ci.org"
   - git config --global user.name "Travis CI"
