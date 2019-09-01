@@ -1,12 +1,14 @@
 language: cpp
-install: make get-deps
+install:
+- ls
 dist: bionic
 compiler:
-  - gcc
+- gcc
 before_install:
-  - sudo apt-get install -y qt5-default qt5-qmake
-install:
-  - ls
+- sudo apt-get install -y qt5-default qt5-qmake
 script:
-  - qmake
-  - make -j 2
+- qmake
+- make -j 2
+env:
+  global:
+    secure: MSrln06eDEVNboG2rDm/8K+5s2+k5ahb9zHKrWGIZv5Hl84tPNmHTYyScU5a0LqCnTO5l/Hm2v5ZWF0V4QMRLimr+QLUwEgnDk924dS8v1FuVEjCELnHEGVXRXiTfhIfDWlz2jlICyPerTbNNt1xzNhC9McjY8fh1vjPlY2wND0=
