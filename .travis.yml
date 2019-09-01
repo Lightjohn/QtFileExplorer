@@ -4,9 +4,18 @@ dist: bionic
 compiler:
   - gcc
 before_install:
-  - sudo apt-get install -y qt5-default qt5-qmake
+  - sudo apt-get install -y qt5-default qt5-qmake clang-format
 install:
   - ls
 script:
   - qmake
   - make -j 2
+ after_success:
+  - clang-format -i -style=LLVM *.cpp *.h
+  - git config --global user.email "travis@travis-ci.org"
+  - git config --global user.name "Travis CI"
+  - git add *.cpp *.h
+  - git commit --message "Travis build: AUTO FORMAT"
+  - git remote add origin-pages https://${GH_TOKEN}@github.com/Lightjohn/QtFileExplorer.git > /dev/null 2>&1
+  - git push --quiet
+ 
