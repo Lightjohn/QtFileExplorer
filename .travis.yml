@@ -15,8 +15,8 @@ after_success:
   - git config --global user.name "Travis CI"
   - git add *.cpp *.h
   - git commit --message "Travis AUTO FORMAT"
-  - git remote add origin-master https://${GH_TOKEN}@github.com/Lightjohn/QtFileExplorer.git > /dev/null 2>&1
-  - git push --quiet --set-upstream origin-master HEAD
+  - git remote add master https://${GH_TOKEN}@github.com/Lightjohn/QtFileExplorer.git > /dev/null 2>&1
+  - git push --set-upstream master HEAD
 env:
   global:
     secure: MSrln06eDEVNboG2rDm/8K+5s2+k5ahb9zHKrWGIZv5Hl84tPNmHTYyScU5a0LqCnTO5l/Hm2v5ZWF0V4QMRLimr+QLUwEgnDk924dS8v1FuVEjCELnHEGVXRXiTfhIfDWlz2jlICyPerTbNNt1xzNhC9McjY8fh1vjPlY2wND0=
