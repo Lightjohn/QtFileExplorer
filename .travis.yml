@@ -16,7 +16,4 @@ after_success:
   - clang-format -i -style=LLVM *.cpp *.h
   - git add *.cpp *.h
   - git commit --message "Travis AUTO FORMAT"
-  - git push https://${GH_TOKEN}@github.com/Lightjohn/QtFileExplorer.git
-env:
-  global:
-    secure: USg7sjWCb69vKpA28diczd2Kj2saZBzqulaCoA0vL4XBjrH8Aacb1r+8z/SJbtsDZXXbQkCkL25NeYq8GLHbOBAm0XbohTSZNnYolV0/TFHTaQ4rVlOu/pN0emgRZmhaGX8kW/ezUx4i10u52jtgxmZh9Aoe5KwJgszYTPsRAZ0=
+  - git push https://${GH_TOKEN}@github.com/Lightjohn/QtFileExplorer.git --quiet > /dev/null 2>&1
