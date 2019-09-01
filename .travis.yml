@@ -10,15 +10,13 @@ script:
   - qmake
   - make -j 2
 after_success:
-  - clang-format -i -style=LLVM *.cpp *.h
   - git config --global user.email "travis@travis-ci.org"
   - git config --global user.name "Travis CI"
+  - git checkout master
+  - clang-format -i -style=LLVM *.cpp *.h
   - git add *.cpp *.h
-  - git config credential.helper "store --file=.git/credentials"
-  - echo "https://${GH_TOKEN}:@github.com" > .git/credentials
   - git commit --message "Travis AUTO FORMAT"
-  - git remote add master https://${GH_TOKEN}@github.com/Lightjohn/QtFileExplorer.git > /dev/null 2>&1
-  - git push --set-upstream master HEAD
+  - git push https://${GH_TOKEN}@github.com/Lightjohn/QtFileExplorer.git
 env:
   global:
     secure: MSrln06eDEVNboG2rDm/8K+5s2+k5ahb9zHKrWGIZv5Hl84tPNmHTYyScU5a0LqCnTO5l/Hm2v5ZWF0V4QMRLimr+QLUwEgnDk924dS8v1FuVEjCELnHEGVXRXiTfhIfDWlz2jlICyPerTbNNt1xzNhC9McjY8fh1vjPlY2wND0=
