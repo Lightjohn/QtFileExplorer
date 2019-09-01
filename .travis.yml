@@ -15,5 +15,5 @@ after_success:
   - git checkout master
   - clang-format -i -style=LLVM *.cpp *.h
   - git add *.cpp *.h
-  - git commit --message "Travis AUTO FORMAT"
+  - git commit --message "[ci skip] Travis AUTO FORMAT"
   - git push https://${GH_TOKEN}@github.com/Lightjohn/QtFileExplorer.git --quiet > /dev/null 2>&1
