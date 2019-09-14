@@ -322,10 +322,9 @@ void myWindows::keyboardDel() {
   box.setDefaultButton(QMessageBox::Ok);
   int ret = box.exec();
   if (ret == QMessageBox::Ok) {
+	deletetask *task = new deletetask(shiftList, deleteStatus, toDelete);
+    QThreadPool::globalInstance()->start(task);
   }
-
-  deletetask *task = new deletetask(shiftList, deleteStatus, toDelete);
-  QThreadPool::globalInstance()->start(task);
 }
 
 // To add coloration to folders/files
