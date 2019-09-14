@@ -322,7 +322,7 @@ void myWindows::keyboardDel() {
   box.setDefaultButton(QMessageBox::Ok);
   int ret = box.exec();
   if (ret == QMessageBox::Ok) {
-	deletetask *task = new deletetask(shiftList, deleteStatus, toDelete);
+    deletetask *task = new deletetask(shiftList, deleteStatus, toDelete);
     QThreadPool::globalInstance()->start(task);
   }
 }
