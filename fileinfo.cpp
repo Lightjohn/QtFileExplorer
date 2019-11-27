@@ -17,7 +17,7 @@
 fileInfo::fileInfo(QWidget *parent) : QWidget(parent) {
   layout = new QVBoxLayout;
 
-   commonName = QString("Name: ");
+  commonName = QString("Name: ");
   commonSize = QString("Size: ");
   commonSizeEnd = QString("");
   fontSize = QString("font: 14pt;");

@@ -1,7 +1,7 @@
 #ifndef MYWINDOWS_H
 #define MYWINDOWS_H
 
- #include <iostream>
+#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 
