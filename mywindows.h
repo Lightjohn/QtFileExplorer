@@ -29,6 +29,7 @@
 #include <QSettings>
 #include <QShortcut>
 #include <QSizePolicy>
+#include <QSpinBox>
 #include <QStandardItemModel>
 #include <QString>
 #include <QTableView>
@@ -48,7 +49,7 @@ class KeyPressEater;
 class myWindows : public QWidget {
   Q_OBJECT
 public:
-  explicit myWindows(QWidget *parent = 0);
+  explicit myWindows(QWidget *parent = nullptr);
   void keyPressEvent(QKeyEvent *event);
   ~myWindows();
   QShortcut *shortcutSpace;
@@ -68,6 +69,7 @@ public slots:
   void keyboardDel();
   void rename();
   void keyReleaseEvent(QKeyEvent *event);
+  void depthChanged(int);
 
 private:
   void _rename(QString path, QString newName, int *num);
@@ -99,6 +101,7 @@ private:
   QString lastPath;
   KeyPressEater *eater;
   QStringList shiftList;
+  QSpinBox *spinBox;
 };
 
 #endif // MYWINDOWS_H

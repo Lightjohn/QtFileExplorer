@@ -1,5 +1,7 @@
 #include "mywindows.h"
 
+#include <QFileIconProvider>
+
 myWindows::myWindows(QWidget *parent) : QWidget(parent) {
   // Getting size of the screen
   QList<QScreen *> screenObj = QGuiApplication::screens();
@@ -50,6 +52,10 @@ myWindows::myWindows(QWidget *parent) : QWidget(parent) {
 
   info = new fileInfo;
 
+  // Might prevent freeze
+  QFileIconProvider *fileIconProvider = new QFileIconProvider();
+  fileIconProvider->setOptions(QFileIconProvider::DontUseCustomDirectoryIcons);
+
   // Column view part
   model = new QFileSystemModel(this);
   model->setRootPath(QDir::rootPath());
@@ -57,6 +63,7 @@ myWindows::myWindows(QWidget *parent) : QWidget(parent) {
   model->setReadOnly(false);
   model->setFilter(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::AllDirs |
                    QDir::System);
+  model->setIconProvider(fileIconProvider);
 
   // Loading preferences
   loadSettings();
@@ -77,7 +84,14 @@ myWindows::myWindows(QWidget *parent) : QWidget(parent) {
 
   QThreadPool::globalInstance()->setMaxThreadCount(1);
   toDelete = new QList<QString>;
+  QHBoxLayout* spin_and_delete = new QHBoxLayout;
+  spin_and_delete->setAlignment(Qt::AlignLeft);
   deleteStatus = new QLabel("");
+  spinBox = new QSpinBox();
+  spinBox->setMaximum(5);
+  spinBox->setMinimum(0);
+  spinBox->setValue(MAX_DEPTH);
+  spinBox->setFixedWidth(50);
 
   // Keyboard
 
@@ -104,6 +118,12 @@ myWindows::myWindows(QWidget *parent) : QWidget(parent) {
   QObject::connect(itSel, SIGNAL(currentChanged(QModelIndex, QModelIndex)),
                    this, SLOT(clickedNew(QModelIndex, QModelIndex)));
   QObject::connect(rename, SIGNAL(clicked()), this, SLOT(rename()));
+  QObject::connect(spinBox, SIGNAL(valueChanged(int)), this, SLOT(depthChanged(int)));
+
+  //
+  spin_and_delete->addWidget(new QLabel("Preview depth"));
+  spin_and_delete->addWidget(spinBox);
+  spin_and_delete->addWidget(deleteStatus);
 
   // Adding
   layoutPreview->addWidget(lab);
@@ -111,7 +131,7 @@ myWindows::myWindows(QWidget *parent) : QWidget(parent) {
   layoutGlobal->addLayout(layoutPreview);
   layoutGlobal->addWidget(columnView);
   layoutGlobal->addWidget(rename);
-  layoutGlobal->addWidget(deleteStatus);
+  layoutGlobal->addLayout(spin_and_delete);
 
   // Get event even if not in front
   eater = new KeyPressEater(this);
@@ -173,7 +193,9 @@ void myWindows::clickedNew(QModelIndex index, QModelIndex) {
 }
 
 bool myWindows::parseFolderAndUpdate(QString path, int depth) {
-
+  if (depth < 0) {
+      return false;
+  }
   QDir dir = QDir(path);
   dir.setFilter(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
   QString lowExt;
@@ -260,6 +282,10 @@ void myWindows::rename() {
       _rename(shiftList.at(var), text, &num);
     }
   }
+}
+
+void myWindows::depthChanged(int newValue) {
+  MAX_DEPTH = newValue;
 }
 
 void myWindows::_rename(QString path, QString newName, int *num) {
