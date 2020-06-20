@@ -3,6 +3,8 @@
 Build
 =====
 
+Note: Will now need Qt5.15 because of move to bin feature
+
 you will need `qt5-default` and `qt5-qmake` on Ubuntu
 
 `qmake` then `make -j 4`
