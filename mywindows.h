@@ -86,6 +86,7 @@ private:
   int MAX_DEPTH = 2;
 
   bool isShiftOn;
+  bool oldDelete = false;
 
   QList<QString> *toDelete;
 
