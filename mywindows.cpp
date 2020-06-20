@@ -84,7 +84,7 @@ myWindows::myWindows(QWidget *parent) : QWidget(parent) {
 
   QThreadPool::globalInstance()->setMaxThreadCount(1);
   toDelete = new QList<QString>;
-  QHBoxLayout* spin_and_delete = new QHBoxLayout;
+  QHBoxLayout *spin_and_delete = new QHBoxLayout;
   spin_and_delete->setAlignment(Qt::AlignLeft);
   deleteStatus = new QLabel("");
   spinBox = new QSpinBox();
@@ -118,7 +118,8 @@ myWindows::myWindows(QWidget *parent) : QWidget(parent) {
   QObject::connect(itSel, SIGNAL(currentChanged(QModelIndex, QModelIndex)),
                    this, SLOT(clickedNew(QModelIndex, QModelIndex)));
   QObject::connect(rename, SIGNAL(clicked()), this, SLOT(rename()));
-  QObject::connect(spinBox, SIGNAL(valueChanged(int)), this, SLOT(depthChanged(int)));
+  QObject::connect(spinBox, SIGNAL(valueChanged(int)), this,
+                   SLOT(depthChanged(int)));
 
   //
   spin_and_delete->addWidget(new QLabel("Preview depth"));
@@ -194,7 +195,7 @@ void myWindows::clickedNew(QModelIndex index, QModelIndex) {
 
 bool myWindows::parseFolderAndUpdate(QString path, int depth) {
   if (depth < 0) {
-      return false;
+    return false;
   }
   QDir dir = QDir(path);
   dir.setFilter(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
@@ -284,9 +285,7 @@ void myWindows::rename() {
   }
 }
 
-void myWindows::depthChanged(int newValue) {
-  MAX_DEPTH = newValue;
-}
+void myWindows::depthChanged(int newValue) { MAX_DEPTH = newValue; }
 
 void myWindows::_rename(QString path, QString newName, int *num) {
   QFileInfo tmp(path);
