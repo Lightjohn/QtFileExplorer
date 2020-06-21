@@ -341,21 +341,21 @@ void myWindows::saveSettings() {
 
 void myWindows::keyboardDel() {
   // If oldDelete i.e rm -r, ask for confirmation else move to bin
-  if (oldDelete) {
-      QMessageBox box;
-      box.setText("Selected files/folders will be eternally deleted !!");
-      box.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-      box.setWindowFlags(Qt::WindowStaysOnTopHint);
-      box.setDefaultButton(QMessageBox::Ok);
-      int ret = box.exec();
-      if (ret == QMessageBox::Ok) {
-        deletetask *task = new deletetask(shiftList, deleteStatus, toDelete, oldDelete);
-        QThreadPool::globalInstance()->start(task);
-      }
-    } else {
-      deletetask *task = new deletetask(shiftList, deleteStatus, toDelete, oldDelete);
-      QThreadPool::globalInstance()->start(task);
-    }
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+  QMessageBox box;
+  box.setText("Selected files/folders will be eternally deleted !!");
+  box.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+  box.setWindowFlags(Qt::WindowStaysOnTopHint);
+  box.setDefaultButton(QMessageBox::Ok);
+  int ret = box.exec();
+  if (ret == QMessageBox::Ok) {
+    deletetask *task = new deletetask(shiftList, deleteStatus, toDelete);
+    QThreadPool::globalInstance()->start(task);
+  }
+#else
+  deletetask *task = new deletetask(shiftList, deleteStatus, toDelete);
+  QThreadPool::globalInstance()->start(task);
+#endif
 }
 
 // To add coloration to folders/files

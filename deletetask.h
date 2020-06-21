@@ -9,14 +9,13 @@
 
 class deletetask : public QRunnable {
 public:
-  deletetask(QStringList, QLabel *, QList<QString> *, bool);
+  deletetask(QStringList, QLabel *, QList<QString> *);
   void run() override;
 
 private:
   QLabel *status;
   QList<QString> *deleteList;
   QStringList todelete;
-  bool oldDelete;
 };
 
 #endif // DELETETASK_H
