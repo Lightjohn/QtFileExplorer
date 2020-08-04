@@ -31,7 +31,7 @@ Functionalities
 
 *Suppr* : Delete the folder/file selected, also work with shift selected folders/files.
 
-**WARNING** Suppr does not move to trash, will delete recursively a folder...
+**WARNING** Suppr does not move to trash if compiled against <Qt5.15, will delete recursively...
 
 The application remember the last path used and will use it on launch.   
 
