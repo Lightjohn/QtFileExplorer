@@ -333,10 +333,12 @@ void myWindows::keyReleaseEvent(QKeyEvent *event) {
 void myWindows::loadSettings() {
   QSettings settings("IntCorpLightAssociation", "FileViewer");
   lastPath = settings.value("lastPath").toString();
+  MAX_DEPTH = settings.value("depthMax").toInt();
 }
 void myWindows::saveSettings() {
   QSettings settings("IntCorpLightAssociation", "FileViewer");
   settings.setValue("lastPath", lastPath);
+  settings.setValue("depthMax",MAX_DEPTH);
 }
 
 void myWindows::keyboardDel() {
