@@ -338,7 +338,7 @@ void myWindows::loadSettings() {
 void myWindows::saveSettings() {
   QSettings settings("IntCorpLightAssociation", "FileViewer");
   settings.setValue("lastPath", lastPath);
-  settings.setValue("depthMax",MAX_DEPTH);
+  settings.setValue("depthMax", MAX_DEPTH);
 }
 
 void myWindows::keyboardDel() {
