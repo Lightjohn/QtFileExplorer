@@ -11,6 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = QtFileExplorer
 TEMPLATE = app
 
+RC_ICONS  = q.ico
 
 SOURCES += main.cpp\
     deletetask.cpp \
