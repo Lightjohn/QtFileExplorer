@@ -18,14 +18,16 @@ SOURCES += main.cpp\
     mywindows.cpp \
     fileinfo.cpp \
     imagepreview.cpp \
-    keypresseater.cpp
+    keypresseater.cpp \
+    refreshtask.cpp
 
 HEADERS  += \
     deletetask.h \
     mywindows.h \
     fileinfo.h \
     imagepreview.h \
-    keypresseater.h
+    keypresseater.h \
+    refreshtask.h
 
 FORMS    +=
 

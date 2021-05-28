@@ -62,6 +62,7 @@ public:
   int screenW;
   void closeEvent(QCloseEvent *);
 
+  int canDelete();
 public slots:
   void clickedNew(QModelIndex index, QModelIndex index2);
   void keyboardEvent();

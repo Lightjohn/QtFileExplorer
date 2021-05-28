@@ -161,8 +161,7 @@ void myWindows::clickedNew(QModelIndex index, QModelIndex) {
   updatePath(index);
   QString fileName = model->fileName(index);
   QFileInfo infoFile(lastFilePath);
-  QString ext = fileName.split(".")
-                    .back(); // We could use here QFileInfo::completeSuffix()
+  QString ext = fileName.split(".").back(); // We could use here QFileInfo::completeSuffix()
   int SIZE_NAME_MAX = 50;
   if (fileName.length() > SIZE_NAME_MAX) {
     info->setName(fileName.mid(0, SIZE_NAME_MAX));
@@ -341,23 +340,28 @@ void myWindows::saveSettings() {
   settings.setValue("depthMax", MAX_DEPTH);
 }
 
+int myWindows::canDelete() {
+    QMessageBox box;
+    box.setText("Selected files/folders will be eternally deleted !!");
+    box.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+    box.setWindowFlags(Qt::WindowStaysOnTopHint);
+    box.setDefaultButton(QMessageBox::Ok);
+    return box.exec();
+}
+
+
 void myWindows::keyboardDel() {
   // If oldDelete i.e rm -r, ask for confirmation else move to bin
 #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-  QMessageBox box;
-  box.setText("Selected files/folders will be eternally deleted !!");
-  box.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-  box.setWindowFlags(Qt::WindowStaysOnTopHint);
-  box.setDefaultButton(QMessageBox::Ok);
-  int ret = box.exec();
+  int ret = canDelete();
+#else
+  // New way, we can "delete" all the time
+  int ret = QMessageBox::Ok;
+#endif
   if (ret == QMessageBox::Ok) {
     deletetask *task = new deletetask(shiftList, deleteStatus, toDelete);
     QThreadPool::globalInstance()->start(task);
   }
-#else
-  deletetask *task = new deletetask(shiftList, deleteStatus, toDelete);
-  QThreadPool::globalInstance()->start(task);
-#endif
 }
 
 // To add coloration to folders/files
