@@ -161,7 +161,8 @@ void myWindows::clickedNew(QModelIndex index, QModelIndex) {
   updatePath(index);
   QString fileName = model->fileName(index);
   QFileInfo infoFile(lastFilePath);
-  QString ext = fileName.split(".").back(); // We could use here QFileInfo::completeSuffix()
+  QString ext = fileName.split(".")
+                    .back(); // We could use here QFileInfo::completeSuffix()
   int SIZE_NAME_MAX = 50;
   if (fileName.length() > SIZE_NAME_MAX) {
     info->setName(fileName.mid(0, SIZE_NAME_MAX));
@@ -341,14 +342,13 @@ void myWindows::saveSettings() {
 }
 
 int myWindows::canDelete() {
-    QMessageBox box;
-    box.setText("Selected files/folders will be eternally deleted !!");
-    box.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-    box.setWindowFlags(Qt::WindowStaysOnTopHint);
-    box.setDefaultButton(QMessageBox::Ok);
-    return box.exec();
+  QMessageBox box;
+  box.setText("Selected files/folders will be eternally deleted !!");
+  box.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+  box.setWindowFlags(Qt::WindowStaysOnTopHint);
+  box.setDefaultButton(QMessageBox::Ok);
+  return box.exec();
 }
-
 
 void myWindows::keyboardDel() {
   // If oldDelete i.e rm -r, ask for confirmation else move to bin

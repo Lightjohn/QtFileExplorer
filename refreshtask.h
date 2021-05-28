@@ -1,18 +1,17 @@
 #ifndef REFRESHTASK_H
 #define REFRESHTASK_H
 
-#include <QRunnable>
+#include <QDir>
 #include <QFileInfo>
 #include <QLabel>
-#include <QDir>
+#include <QRunnable>
 
-
-class refreshtask: public QRunnable
-{
+class refreshtask : public QRunnable {
 public:
   refreshtask(QLabel *preview, QString currentPath, int depth);
   void run() override;
   void stop();
+
 private:
   bool shouldrun;
   QLabel *preview;

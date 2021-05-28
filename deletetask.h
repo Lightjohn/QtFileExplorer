@@ -12,6 +12,7 @@ public:
   deletetask(QStringList, QLabel *, QList<QString> *);
   void run() override;
   void deleteFileRm(QString filepath);
+
 private:
   QLabel *status;
   QList<QString> *deleteList;

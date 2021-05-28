@@ -8,18 +8,18 @@ deletetask::deletetask(QStringList something, QLabel *status,
 }
 
 void deletetask::deleteFileRm(QString filepath) {
-    QFileInfo tmp(filepath);
-    if (tmp.isFile()) {
-      QFile file(filepath);
-      if (!file.remove()) {
-        qDebug() << "File not deleted: " << file.fileName();
-      }
-    } else {
-      QDir folder(filepath);
-      if (!folder.removeRecursively()) {
-        qDebug() << "Not all was deleted: " << folder.absolutePath();
-      }
+  QFileInfo tmp(filepath);
+  if (tmp.isFile()) {
+    QFile file(filepath);
+    if (!file.remove()) {
+      qDebug() << "File not deleted: " << file.fileName();
     }
+  } else {
+    QDir folder(filepath);
+    if (!folder.removeRecursively()) {
+      qDebug() << "Not all was deleted: " << folder.absolutePath();
+    }
+  }
 }
 
 void deletetask::run() {
@@ -37,7 +37,6 @@ void deletetask::run() {
       qDebug() << "Not deleted: " << toDelete;
       qDebug() << "Trying to rm ";
       deleteFileRm(toDelete);
-
     }
 #endif
   }
