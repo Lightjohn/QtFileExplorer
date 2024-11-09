@@ -91,7 +91,6 @@ myWindows::myWindows(QWidget *parent) : QWidget(parent) {
   spinBox->setMaximum(5);
   spinBox->setMinimum(0);
   spinBox->setValue(MAX_DEPTH);
-  spinBox->setFixedWidth(50);
 
   // Keyboard
 
@@ -222,7 +221,7 @@ bool myWindows::parseFolderAndUpdate(QString path, int depth) {
 
 bool myWindows::isImage(QString suffix) {
   QString lowSuffix = suffix.toLower();
-  return (lowSuffix == "jpg" || lowSuffix == "jpeg" || lowSuffix == "png");
+  return (lowSuffix == "jpg" || lowSuffix == "jpeg" || lowSuffix == "png" || lowSuffix == "webp");
 }
 
 void myWindows::updateImage() { updateImage(lastFilePath); }
